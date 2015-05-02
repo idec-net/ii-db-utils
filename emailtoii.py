@@ -5,7 +5,7 @@ rawletters="new/" # new raw messages to parse them
 indexdir="echo/"
 messagesdir="msg/"
 
-echo="mailbox.14"
+echo="mailbox.15"
 addr="mscript, 1"
 tags="ii/ok"
 

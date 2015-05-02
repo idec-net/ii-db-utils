@@ -1,7 +1,7 @@
 #!/usr/bin/env python2
 #-*- coding: utf8 -*-
 
-import os,datetime
+import os,sys,datetime
 from ii_functions import *
 
 dformat="%Y%m%d" # format for date input
@@ -97,3 +97,12 @@ else:
 	for msg in sorted(msglist.itervalues(), key=sortByTime):
 		print "====----===="
 		print getReadableMsg(msg)
+	
+	args=sys.argv[1:]
+	if(len(args)==1):
+		try:
+			f=open(args[0], "w")
+			f.write("\n".join(msglist)+"\n")
+			f.close()
+		except Exception, e:
+			print "Ошибка записи в файл: "+str(e).decode("utf8")
