@@ -41,13 +41,6 @@ def savemsg(hash, echo, message):
 	open(msgdir+hash, "w").write(message)
 	open(indexdir+echo, "a").write(hash+"\n")
 
-def getLocalEcho(echo):
-	global indexdir
-	if(not os.path.exists(indexdir+echo)):
-		return ""
-	else:
-		return open(indexdir+echo).read()
-
 def getMsgList(echo):
 	global indexdir
 	if(os.path.exists(indexdir+echo)):

@@ -30,7 +30,7 @@ index=[]
 countindex={}
 echolist=os.listdir(indexdir)
 for echoarea in echolist:
-	echo=getLocalEcho(echoarea).splitlines()
+	echo=getMsgList(echoarea)
 	countindex[echoarea]=len(echo)
 	index+=echo
 

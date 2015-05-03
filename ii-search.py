@@ -40,10 +40,10 @@ if(len(timeprom)==2):
 index=[]
 if(not echo[0]):
 	for echoarea in os.listdir(indexdir):
-		index+=getLocalEcho(echoarea).splitlines()
+		index+=getMsgList(echoarea)
 else:
 	for x in echo:
-		index+=getLocalEcho(x).splitlines()
+		index+=getMsgList(x)
 
 if(len(index)<=0):
 	print "База пуста (проверьте права доступа)."
