@@ -74,7 +74,11 @@ def fetch_messages(source, dest, echoesToFetch, tobundle):
 		except:
 			print u"Невозможно сохранить бандл!"
 
-echo=raw_input("Введите нужную эху(эхи): ").decode("utf8").split(" ")
+echo=raw_input("Введите нужные эхи через пробел (или '*' для всех): ").decode("utf8")
+if (echo=="*"):
+	echo=os.listdir(os.path.join(source, "echo"))
+else:
+	echo=echo.split(" ")
 
 if not os.path.exists(os.path.join(dest, "echo")):
 	print "Каталог индекса не существует; создаём..."
