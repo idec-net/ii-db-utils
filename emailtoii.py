@@ -64,10 +64,15 @@ for filename in os.listdir(rawletters):
 			payload=part.get_payload(decode=True)
 			if(not payload):
 				continue
-			msg+="\n"+h.handle(payload.decode("utf8")).strip().replace("\n\n","\n")
+			try:
+				payload=payload.decode(charset)
+				msg+="\n"+h.handle(payload).strip().replace("\n\n","\n")
+			except:
+				msg+="can't decode"
+				continue
 	else:
-		# charset=message.get_content_charset() or "ascii"
-		msg=h.handle(message.get_payload(decode=True).decode("utf8")).strip().replace("\n\n", "\n")
+		charset=message.get_content_charset() or "ascii"
+		msg=h.handle(message.get_payload(decode=True).decode(charset)).strip().replace("\n\n", "\n")
 		
 	iimsg=tags+"\n"+echo+"\n"+str(msgdate)+"\n"+sender+"\n"+addr+"\n"+to+"\n"+subj+"\n"
 	iimsg+="\n"+msg.encode("utf8")
