@@ -17,9 +17,9 @@ def getMsg(msgid):
 
 		message="\n".join(msg[8:])
 
-		meta=dict(repto=rpt,echo=msg[1],time=msg[2],sender=msg[3],addr=msg[4],to=msg[5],subj=msg[6],msg=message,id=msgid)
+		meta=dict(repto=rpt,tags=tags,echo=msg[1],time=msg[2],sender=msg[3],addr=msg[4],to=msg[5],subj=msg[6],msg=message,id=msgid)
 	except:
-		meta=dict(repto=False,echo="",time=0,sender="",addr="",to="",subj="",msg="no message",id=msgid)
+		meta=dict(repto=False,tags="",echo="",time=0,sender="",addr="",to="",subj="",msg="no message",id=msgid)
 	return meta
 
 def b64d(str):
