@@ -22,8 +22,8 @@ for ea in echoes:
     if passed != echo:
         passed = passed + [''] or []
         print ea
-		open('%s%s' % (indexdir,ea),'w').write('\n'.join(passed))
+        open('%s%s' % (indexdir,ea),'w').write('\n'.join(passed))
 
 for h in msgs:
     print h
-	os.remove('%s%s' % (msgdir,h))
+    os.remove('%s%s' % (msgdir,h))
