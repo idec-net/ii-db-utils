@@ -1,13 +1,11 @@
 #!/usr/bin/env python2
 # -*- coding:utf8 -*-
 
-rawletters="new/" # new raw messages to parse them
-indexdir="echo/"
-messagesdir="msg/"
-
 echo="mailbox.15"
 addr="mscript, 1"
 tags="ii/ok"
+
+from ii_functions import *
 
 from email.utils import parsedate,parseaddr
 from email.Header import decode_header
@@ -18,8 +16,7 @@ import base64
 import hashlib
 import html2text
 
-def hsh(str):
-	return base64.urlsafe_b64encode( hashlib.sha256(str).digest() ).replace('-','A').replace('_','z')[:20]
+rawletters=os.path.join(cwd, "new/") # new raw messages to parse them
 
 myparser=pars.Parser()
 h = html2text.HTML2Text()
@@ -78,6 +75,5 @@ for filename in os.listdir(rawletters):
 	iimsg+="\n"+msg.encode("utf8")
 
 	msgid=hsh(iimsg)
-	open(os.path.join(messagesdir, msgid), "w").write(iimsg)
-	open(os.path.join(indexdir, echo), "a").write(msgid+"\n")
+	savemsg(msgid, echo, iimsg)
 	os.remove(letterpath)

@@ -1,8 +1,6 @@
 #!/usr/bin/env python2
+from ii_functions import *
 import os
-
-indexdir="echo/"
-msgdir="msg/"
 
 msgs = os.listdir(msgdir)
 for h in msgs:

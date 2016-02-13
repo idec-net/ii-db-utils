@@ -1,9 +1,6 @@
 #!/usr/bin/env python2
 # -*- coding: utf8 -*-
 
-indexdir="echo/"
-msgdir="msg/"
-
 import os
 from ii_functions import *
 

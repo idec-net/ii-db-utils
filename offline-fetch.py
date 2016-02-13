@@ -35,24 +35,24 @@ def fetch_messages(source, dest, echoesToFetch, tobundle):
 	
 	for echoarea in echoesToFetch:
 		print "fetch "+echoarea
-		sourcepath=os.path.join(source, indexdir, echoarea)
+		sourcepath=os.path.join(source, indexdir_name, echoarea)
 		sourceEcho=echoFromFile(sourcepath)
 
-		destpath=os.path.join(dest, indexdir, echoarea)
+		destpath=os.path.join(dest, indexdir_name, echoarea)
 		destEcho=echoFromFile(destpath)
 
 		difference=[msg for msg in sourceEcho if msg not in destEcho]
 
 		for msgid in difference:
 			if (tobundle):
-				msgpath=os.path.join(source, msgdir, msgid)
+				msgpath=os.path.join(source, msgdir_name, msgid)
 				try:
 					bundle+=msgid+":"+base64.b64encode(open(msgpath).read())+"\n"
 				except:
 					print u"Невозможно открыть файл: "+msgpath
 			else:
 				try:
-					shutil.copyfile(os.path.join(source, msgdir, msgid),  os.path.join(dest, msgdir, msgid))
+					shutil.copyfile(os.path.join(source, msgdir_name, msgid),  os.path.join(dest, msgdir_name, msgid))
 					print "savemsg "+msgid
 				except:
 					print u"Ошибка копирования: "+msgid
@@ -80,12 +80,12 @@ if (echo=="*"):
 else:
 	echo=echo.split(" ")
 
-if not os.path.exists(os.path.join(dest, "echo")):
+if not os.path.exists(os.path.join(dest, indexdir_name)):
 	print "Каталог индекса не существует; создаём..."
-	os.makedirs(os.path.join(dest, "echo"))
+	os.makedirs(os.path.join(dest, indexdir_name))
 
-if not os.path.exists(os.path.join(dest, "msg")):
+if not os.path.exists(os.path.join(dest, msgdir_name)):
 	print "Каталог сообщений не существует; создаём..."
-	os.makedirs(os.path.join(dest, "msg"))
+	os.makedirs(os.path.join(dest, msgdir_name))
 
 fetch_messages(source, dest, echo, tobundle)

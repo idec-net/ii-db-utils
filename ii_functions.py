@@ -2,8 +2,13 @@
 # -*- coding:utf8 -*-
 import os, base64, datetime, hashlib
 
-indexdir="echo/"
-msgdir="msg/"
+cwd=os.getcwd()
+
+indexdir_name="echo/"
+msgdir_name="msg/"
+
+indexdir=os.path.join(cwd, indexdir_name)
+msgdir=os.path.join(cwd, msgdir_name)
 
 def getMsg(msgid):
 	global msgdir

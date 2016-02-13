@@ -5,8 +5,8 @@ from ii_functions import *
 import base64, sys
 
 def target_savemsg(basedir, hash, echo, message):
-	echopath=os.path.join(basedir, "echo", echo)
-	msgidpath=os.path.join(basedir, "msg", hash)
+	echopath=os.path.join(basedir, indexdir_name, echo)
+	msgidpath=os.path.join(basedir, msgdir_name, hash)
 	
 	touch(echopath)
 	touch(msgidpath)
