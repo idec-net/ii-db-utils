@@ -1,5 +1,4 @@
-#!/usr/bin/env python2
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
 
 import ii_functions, sys, codecs
 
@@ -7,7 +6,7 @@ args = sys.argv[1:]
 argc = len(args)
 
 if argc == 0:
-    print "Usage: echocat.py echoarea <start:end>\nor echocat.py echoarea len"
+    print("Usage: echocat.py echoarea <start:end>\nor echocat.py echoarea len")
     sys.exit(1)
 
 echoarea = args[0]
@@ -26,7 +25,7 @@ if argc == 2:
         filtered = messages[slice(int(start), int(end))]
 
     elif position == "len":
-        print len(messages)
+        print(len(messages))
         sys.exit(0)
     else:
         filtered = [messages[int(position)]]
@@ -34,5 +33,5 @@ else:
     filtered = messages
 
 for filename in filtered:
-    msg = codecs.open(ii_functions.msgdir + filename, "r", "utf-8").read()
-    print "msgid: " + filename + "\n" + msg + "\n"
+    msg = ii_functions.read_file(ii_functions.msgdir + filename)
+    print("msgid: " + filename + "\n" + msg + "\n")

@@ -1,4 +1,4 @@
-#!/usr/bin/env python2
+#!/usr/bin/env python3
 # forked from spline1986's versions
 
 import os, sys, sqlite3
@@ -6,9 +6,11 @@ from ii_functions import *
 
 args=sys.argv[1:]
 
-if(len(args)==0):
-	print "Usage: sqlite-export.py <db_file>"
+if len(args)==0:
+	print("Usage: sqlite-export.py <db_file>")
 	sys.exit(1)
+
+check_dirs()
 
 conn = sqlite3.connect(args[0])
 c = conn.cursor()
@@ -26,16 +28,16 @@ subject TEXT,
 body TEXT,
 UNIQUE (id, msgid));""")
 
-echoareas = sorted(os.listdir("echo/"))
+echoareas = sorted(os.listdir(indexdir))
 
 for echoarea in echoareas:
-	print "Echoarea: " + echoarea
+	print("Echoarea: " + echoarea)
 	msgids = getMsgList(echoarea)
 	for msgid in msgids[:-1]:
-		print "MSGID: " + msgid
+		print("MSGID: " + msgid)
 		msg = getMsg(msgid)
 		c.execute("INSERT OR IGNORE INTO msg (msgid, kludges, echoarea, timestump, from_name, address, to_name, subject, body) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);", (msgid, "/".join(msg["tags"]), msg["echo"], msg["time"], msg["sender"], msg["addr"], msg["to"], msg["subj"], msg["msg"]))
-		print "OK"
+		print("OK")
 	conn.commit()
 
 conn.close()

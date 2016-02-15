@@ -15,10 +15,10 @@ def prettier_size(n,pow=0,b=1024,u='B',pre=['']+[p+'i'for p in'KMGTPEZY']):
 if argc>0:
 	data = urllib.parse.urlencode({'pauth': authstr, 'filename':argv[0]}).encode('utf8')
 	out = urllib.request.urlopen(station + 'x/file', data)
-	
+
 	file_size=0
 	block_size=8192
-	
+
 	f=open(argv[0], "wb")
 	while True:
 		buffer=out.read(block_size)
@@ -35,7 +35,7 @@ else:
 	for file in files:
 		a=file.decode("utf8").split(":")
 
-		if (len(a)<3):
+		if len(a)<3:
 			print(file)
 		else:
 			print(a[0]+" | "+prettier_size(int(a[1]))+" | "+a[2])

@@ -1,8 +1,9 @@
-#!/usr/bin/env python2
-# -*- coding: utf8 -*-
+#!/usr/bin/env python3
 
 import os
 from ii_functions import *
+
+check_dirs()
 
 def dirsize(path):
 	size=os.path.getsize(path)
@@ -33,31 +34,31 @@ for echoarea in echolist:
 
 echoesOrder=sorted(countindex, key=countindex.get, reverse=True)
 
-print "Статистика по эхоконференциям\n===="
+print("Статистика по эхоконференциям\n====")
 for echo in echoesOrder:
-	print echo+": "+str(countindex[echo])
+	print(echo+": "+str(countindex[echo]))
 
-print "\nЭхоконференций: "+str(len(echolist))
-print "Всего сообщений: "+str(len(index))
+print("\nЭхоконференций: "+str(len(echolist)))
+print("Всего сообщений: "+str(len(index)))
 
 if(len(index)<=0):
-	print "База пуста (проверьте права доступа)."
+	print("База пуста (проверьте права доступа).")
 	exit()
 
-print "\nЗагрузка базы..."
+print("\nЗагрузка базы...")
 msglist={}
 for x in index:
 	msglist[x]=getMsg(x)
 
-print "Размер базы данных:"
+print("Размер базы данных:")
 indexsize=dirsize(indexdir)
 msgs_size=dirsize(msgdir)
-print "Индекс: "+humansize(indexsize)+"; Сообщения: "+humansize(msgs_size)+"; Всего: "+humansize(indexsize+msgs_size)+";"
+print("Индекс: "+humansize(indexsize)+"; Сообщения: "+humansize(msgs_size)+"; Всего: "+humansize(indexsize+msgs_size)+";")
 
-print "\nПо поинтам:\n===="
+print("\nПо поинтам:\n====")
 userlist={}
-for msg in msglist.itervalues():
-	point=msg.get("sender").encode("utf-8")
+for msg in msglist.values():
+	point=msg.get("sender")
 	if(not userlist.__contains__(point)):
 		userlist[point]=1
 	else:
@@ -65,6 +66,6 @@ for msg in msglist.itervalues():
 
 usersOrder=sorted(userlist, key=userlist.get, reverse=True)
 for point in usersOrder:
-	print point+": "+str(userlist[point])
+	print(point+": "+str(userlist[point]))
 
-print "\nВсего поинтов: "+str(len(userlist.keys()))
+print("\nВсего поинтов: "+str(len(userlist.keys())))

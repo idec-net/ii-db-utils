@@ -1,5 +1,5 @@
-#!/usr/bin/python2
-# -*- coding:utf8 -*-
+#!/usr/bin/env python3
+
 from ii_functions import *
 import os
 
@@ -19,7 +19,7 @@ for echo in echolist:
 		if [msg["msg"], msg["subj"]] in arr:
 			doubles+=1
 			msgids.remove(msgid)
-			print msgid
+			print(msgid)
 		else:
 			arr.append([msg["msg"], msg["subj"]])
 	
