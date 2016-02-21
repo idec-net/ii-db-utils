@@ -18,7 +18,7 @@ def humansize(size):
 	mb="Мб"
 	gb="Гб"
 	strings=[b, kb, mb, gb]
-	_format="%.1f%s"
+	_format="%.1f %s"
 	for u in strings:
 		if size<1024 : return _format % (size, u)
 		size/=1024
@@ -34,12 +34,12 @@ for echoarea in echolist:
 
 echoesOrder=sorted(countindex, key=countindex.get, reverse=True)
 
-print("Статистика по эхоконференциям\n====")
-for echo in echoesOrder:
-	print(echo+": "+str(countindex[echo]))
+print("Статистика сообщений по эхам\n====")
+lens=[len(s) for s in echoesOrder]
+width=max(lens)+2
 
-print("\nЭхоконференций: "+str(len(echolist)))
-print("Всего сообщений: "+str(len(index)))
+for echo in echoesOrder:
+	print(echo.ljust(width)+str(countindex[echo]))
 
 if(len(index)<=0):
 	print("База пуста (проверьте права доступа).")
@@ -50,12 +50,10 @@ msglist={}
 for x in index:
 	msglist[x]=getMsg(x)
 
-print("Размер базы данных:")
 indexsize=dirsize(indexdir)
 msgs_size=dirsize(msgdir)
-print("Индекс: "+humansize(indexsize)+"; Сообщения: "+humansize(msgs_size)+"; Всего: "+humansize(indexsize+msgs_size)+";")
 
-print("\nПо поинтам:\n====")
+print("\nПо поинтам\n====")
 userlist={}
 for msg in msglist.values():
 	point=msg.get("sender")
@@ -65,7 +63,18 @@ for msg in msglist.values():
 		userlist[point]+=1
 
 usersOrder=sorted(userlist, key=userlist.get, reverse=True)
-for point in usersOrder:
-	print(point+": "+str(userlist[point]))
 
-print("\nВсего поинтов: "+str(len(userlist.keys())))
+lens=[len(s) for s in usersOrder]
+width=max(lens)+2
+
+for point in usersOrder:
+	print(point.ljust(width)+str(userlist[point]))
+
+strl=18 # на сколько символов рассчитываем
+
+print("\n"+"Эхоконференций".ljust(strl)+": "+str(len(echolist)))
+print("Всего сообщений".ljust(strl)+": "+str(len(index)))
+print("Всего поинтов".ljust(strl)+": "+str(len(userlist.keys())))
+print("Индекс".ljust(strl)+": "+humansize(indexsize))
+print("Сообщения".ljust(strl)+": "+humansize(msgs_size))
+print("Всего".ljust(strl)+": "+humansize(indexsize+msgs_size))

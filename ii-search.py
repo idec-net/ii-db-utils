@@ -11,13 +11,14 @@ def getReadableMsg(msg):
 	sender=msg.get('sender')
 	addr=msg.get('addr')
 	to=msg.get('to')
+	echo=msg.get('echo')
 
 	if msg['repto']:
 		repto=msg.get("repto")
 	else:
 		repto="-"
 
-	msgtext="msgid: "+msgid+"\n"+u"Ответ на: "+repto+"\n"+formatDate(msg.get('time'))+"\n"+subj+"\n"+sender+" ("+addr+")  ->  "+to+"\n\n"+msg.get("msg")
+	msgtext="msgid: "+msgid+"\n"+echo+"\nОтвет на: "+repto+"\n"+formatDate(msg.get('time'))+"\n"+subj+"\n"+sender+" ("+addr+")  ->  "+to+"\n\n"+msg.get("msg")
 	return msgtext
 def sortByTime(msg):
 	return float(msg.get("time"))
