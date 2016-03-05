@@ -28,7 +28,7 @@ view() {
 		echoarea="`cat $indexdir/$1`"
 		for msgid in $echoarea
 		do
-			echo -n "N=$i; id=$msgid; "
+			echo "N=$i; id=$msgid;"
 			cat $msgdir/$msgid
 			echo ""
 			i=$(($i+1))
@@ -46,7 +46,7 @@ view() {
 			do
 				if [ $i -eq $number ]
 				then
-					echo -n "N=$i; id=$msgid; "
+					echo "N=$i; id=$msgid;"
 					cat $msgdir/$msgid
 				fi
 				i=$(($i+1))
@@ -91,10 +91,10 @@ reparseSubj() {
 	str="`echo "$1" | dd if=/dev/stdin bs=1 count=3 status=none`"
 	if [ "$str" != "Re:" ]
 	then
-		echo -n "Re: $1"
-	else
-		echo -n "$1"
+		echo -n "Re: "
 	fi
+
+	echo -n $1
 }
 
 fetch() {
@@ -141,21 +141,10 @@ write() {
 			if [ $i -eq $count ]
 			then
 				msg="`cat $msgdir/$msgid`"
-				j=0
-				for line in $msg
-				do
-					if [ $j -eq 1 ]
-					then
-						echo=$line
-					elif [ $j -eq 3 ]
-					then
-						user=$line
-					elif [ $j -eq 7 ]
-					then
-						subj="`reparseSubj $line`"
-					fi
-					j=$(($j+1))
-				done
+				echo="`head -n 2 $msgdir/$msgid | tail -n 1 -`"
+				user="`head -n 4 $msgdir/$msgid | tail -n 1 -`"
+				subj="`head -n 7 $msgdir/$msgid | tail -n 1 -`"
+				subj="`reparseSubj "$subj"`"
 				template="$echo\n$user\n$subj\n\n@repto:$msgid\n"
 			fi
 			i=$(($i+1))
@@ -174,8 +163,7 @@ send() {
 	do
 		file_contents=`cat $unsentdir/$file`
 		b64=`base64_urlsafe "$file_contents"`
-		request="$point/$authstr/$b64"
-		result=`$request`
+		result="`$loader $point/$authstr/$b64`"
 		stat=`echo "$result" | dd if=/dev/stdin bs=1 count=6 status=none`
 		echo "$result"
 
