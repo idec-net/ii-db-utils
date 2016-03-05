@@ -22,6 +22,81 @@ mkdir -p $msgdir
 mkdir -p $unsentdir
 mkdir -p $outdir
 
+view() {
+	if [ "$2" = "" ]
+	then
+		echoarea="`cat $indexdir/$1`"
+		for msgid in $echoarea
+		do
+			echo -n "N=$i; id=$msgid; "
+			cat $msgdir/$msgid
+			echo ""
+			i=$(($i+1))
+		done
+	else
+		filesize=$((`stat $indexdir/$1 -c %s`))
+		if [ "$2" = "len" ]
+		then
+			echo $(($filesize/21))
+		else
+			number=$(($2))
+			echoarea="`cat $indexdir/$1`"
+			i=0
+			for msgid in $echoarea
+			do
+				if [ $i -eq $number ]
+				then
+					echo -n "N=$i; id=$msgid; "
+					cat $msgdir/$msgid
+				fi
+				i=$(($i+1))
+			done
+		fi
+	fi
+}
+
+nch() {
+	echo "$1" | dd if=/dev/stdin bs=1 count=1 skip=$2 status=none
+}
+
+urlsafe_replace() {
+	text=$1
+	len=${#text}
+	i=0;
+	while [ $i -le $len ]
+	do
+		char=`nch $text $i`
+		if [ "$char" = "+" ]
+		then
+			echo -n "-"
+		elif [ "$char" = "/" ]
+		then
+			echo -n "_"
+		else
+			echo -n $char
+		fi
+		i=$(($i+1))
+	done
+}
+
+base64_urlsafe() {
+	src=`echo "$1" | base64`
+	for i in $src
+	do
+		urlsafe_replace $i
+	done
+}
+
+reparseSubj() {
+	str="`echo "$1" | dd if=/dev/stdin bs=1 count=3 status=none`"
+	if [ "$str" != "Re:" ]
+	then
+		echo -n "Re: $1"
+	else
+		echo -n "$1"
+	fi
+}
+
 fetch() {
 	for echoarea in $echolist
 	do
@@ -51,42 +126,45 @@ fetch() {
 }
 
 write() {
-	echo "not implemented"
-}
+	echo=$1
 
-view() {
-	echo "not implemented"
-}
+	if [ "$2" = "" ]
+	then
+		template="$echo\nAll\n...\n\n"
+		# не отвечаем, а пишем новое
+	else
+		echoarea="`cat $indexdir/$echo`"
+		count=$(($2))
+		i=0
+		for msgid in $echoarea
+		do
+			if [ $i -eq $count ]
+			then
+				msg="`cat $msgdir/$msgid`"
+				j=0
+				for line in $msg
+				do
+					if [ $j -eq 1 ]
+					then
+						echo=$line
+					elif [ $j -eq 3 ]
+					then
+						user=$line
+					elif [ $j -eq 7 ]
+					then
+						subj="`reparseSubj $line`"
+					fi
+					j=$(($j+1))
+				done
+				template="$echo\n$user\n$subj\n\n@repto:$msgid\n"
+			fi
+			i=$(($i+1))
+		done
+	fi
 
-nch() {
-	echo "$1" | dd if=/dev/stdin bs=1 count=1 skip=$2 status=none
-}
-
-urlsafe_replace() {
-	text=`echo "$1" | base64`
-	len=${#text}
-	i=0;
-	while [ $i -le $len ]
-	do
-		char=`nch $text $i`
-		if [ "$char" = "+" ]
-		then
-			echo -n "-"
-		elif [ "$char" = "/" ]
-		then
-			echo -n "_"
-		else
-			echo -n $char
-		fi
-		i=$(($i+1))
-	done
-}
-
-base64_urlsafe() {
-	for i in $@
-	do
-		urlsafe_replace $i
-	done
+	filename="$unsentdir/`date -Iseconds`"
+	echo -e $template > $filename
+	$editor $filename
 }
 
 send() {
@@ -110,8 +188,8 @@ send() {
 
 case $1 in
 "fetch") fetch;;
-"view") view;;
-"write") write;;
+"view") view $2 $3;;
+"write") write $2 $3;;
 "send") send;;
 "") echo "help will be provided later";;
 esac
