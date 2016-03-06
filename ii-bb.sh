@@ -179,5 +179,5 @@ case $1 in
 "view") view $2 $3;;
 "write") write $2 $3;;
 "send") send;;
-"") echo "help will be provided later";;
+"") echo -e "Usage:\n\nii-bb.sh view echoarea [number]\nii-bb.sh view echoarea len\nii-bb.sh write echoarea [number]\nii-bb.sh send\nii-bb.sh fetch";;
 esac
