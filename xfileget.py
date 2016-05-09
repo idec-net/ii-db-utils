@@ -31,7 +31,7 @@ if argc>0:
 
 else:
 	data = urllib.parse.urlencode({'pauth': authstr}).encode('utf8')
-	files = urllib.request.urlopen(station + 'x/file', data).read().splitlines()
+	files = urllib.request.urlopen(station + 'x/filelist', data).read().splitlines()
 	for file in files:
 		a=file.decode("utf8").split(":")
 
