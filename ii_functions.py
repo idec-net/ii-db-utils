@@ -14,10 +14,16 @@ def read_file(filename):
 	with open(filename, "rb") as p:
 		return p.read().decode("utf8")
 
-def getMsg(msgid):
+def getMsg(msgid, from_string=None):
 	global msgdir
 	try:
-		msg=read_file(msgdir+msgid).splitlines()
+		if from_string == None:
+			msg=read_file(msgdir+msgid).splitlines()
+		else:
+			msg=from_string.splitlines()
+			if not msgid:
+				msgid=None
+
 		tags=parseTags(msg[0])
 		if 'repto' in tags:
 			rpt=tags['repto']
