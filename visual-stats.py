@@ -64,7 +64,7 @@ else:
 	title = "Echoareas"
 
 total = 0
-print("%-25s ▒ ≈ %s messages" % (title, value_of_division))
+print("\n%-25s ▒ ≈ %s messages" % (title, value_of_division))
 print("───────────────────────────────────────────────────────────────────────────────")
 for item in stat:
 	dots = ""
