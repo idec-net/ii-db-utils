@@ -66,7 +66,7 @@ for filename in os.listdir(rawletters):
 		charset=message.get_content_charset() or "ascii"
 		msg=h.handle(message.get_payload(decode=True).decode(charset)).strip().replace("\n\n", "\n")
 
-	iimsg=tags+"\n"+echo+"\n"+str(msgdate)+"\n"+sender+"\n"+addr+"\n"+to+"\n"+subj+"\n"
+	iimsg=tags+"\n"+echo+"\n"+str(msgdate)+"\n"+str(sender)+"\n"+str(addr)+"\n"+str(to)+"\n"+str(subj)+"\n"
 	iimsg+="\n"+msg
 
 	msgid=hsh(iimsg)
